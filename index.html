@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Smart Resume Analyzer</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      <div class="brand">
+        <div class="logo">RA</div>
+        <div>
+          <div class="title">Smart Resume Analyzer</div>
+          <div class="lead">Upload a resume and paste a job description to get an ATS match score</div>
+        </div>
+      </div>
+
+      <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label>Upload Resume (PDF)</label>
+          <input type="file" name="resume" required>
+        </div>
+
+        <div class="form-group">
+          <label>Paste Job Description</label>
+          <textarea name="jd" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <button class="btn" type="submit">Analyze</button>
+        </div>
+      </form>
+
+      <div class="hint">Tip: Use concise job descriptions for clearer matching results.</div>
+    </div>
+
+    <div class="right">
+      {% if score %}
+      <div class="results">
+        <div class="result-row">
+          <div>
+            <div class="badge">Match Score</div>
+            <div class="score">{{ score }}%</div>
+          </div>
+          <div style="text-align:right">
+            <div class="badge">Status</div>
+            <div style="margin-top:6px">{{ "Good" if score >= 60 else "Needs Improvement" }}</div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <div class="badge">Skills Found</div>
+          <div class="list">
+            {% for s in skills %}
+              <div class="chip">{{ s }}</div>
+            {% endfor %}
+            {% if skills|length == 0 %}
+              <div class="chip">No skills detected</div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <div class="badge">Missing Skills</div>
+          <div class="list">
+            {% for m in missing %}
+              <div class="chip">{{ m }}</div>
+            {% endfor %}
+            {% if missing|length == 0 %}
+              <div class="chip">No missing skills</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="results">
+        <div style="text-align:center;padding:40px 10px;color:var(--muted)">
+          Upload a resume and paste a job description to see results
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="footer">Built with Python · Flask · spaCy</div>
+    </div>
+  </div>
+</body>
+</html>

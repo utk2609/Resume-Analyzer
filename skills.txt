@@ -1,0 +1,18 @@
+python
+java
+html
+css
+javascript
+sql
+mysql
+mongodb
+django
+flask
+rest api
+git
+github
+machine learning
+deep learning
+nlp
+excel
+power bi
